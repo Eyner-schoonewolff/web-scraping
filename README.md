@@ -1,4 +1,4 @@
- python3.11 -m venv env                                                                                               py proyect-test py base 04:59:46 PM
+ python3.11 -m venv env                                                                                              
 
 pip3.11 install requirements.txt
 
