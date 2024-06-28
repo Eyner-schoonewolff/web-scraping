@@ -7,39 +7,15 @@ class GetDataPage:
         
         self.soup = soup
     
-    def get_name_elemnts(self)->List[str]:
-        
+    def get_name_elements(self) -> List[str]:
         name_elements = self.soup.find_all(class_='name')
-
-        names = []
-        
-        for name in name_elements:
-            name_tag = name.find('a')
-            if name_tag:
-                names.append(name_tag.get_text(strip=True))
-
-        
-        return names
+        return [name.find('a').get_text(strip=True) for name in name_elements if name.find('a')]
     
-    def get_url_images(self)->List[str]:
-        
+    def get_url_images(self) -> List[str]:
         image_elements = self.soup.find_all(class_='image')
-        # Extraemos las URLs de las imágenes dentro de los elementos con la clase 'image'
-        images = []
-        
-        for element in image_elements:
-                img_tag = element.find('img')
-                if img_tag and 'src' in img_tag.attrs:
-                    images.append(img_tag['src'])
-        
-        return images
-          
-
-    def get_prices(self)->List[str]:
-        
+        return [img_tag['src'] for element in image_elements if (img_tag := element.find('img')) and 'src' in img_tag.attrs]
+    
+    def get_prices(self) -> List[str]:
         price_elements = self.soup.find_all(class_='price')
-        # Guardamos en un arreglo la data para obtener el texto que contiene el div
-        prices = [element.get_text(strip=True) for element in price_elements]
-        
-        return prices
+        return [element.get_text(strip=True) for element in price_elements]
         

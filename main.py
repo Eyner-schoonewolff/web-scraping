@@ -14,7 +14,7 @@ try:
         
         service_get_data = GetDataPage(soup = soup)
         # encontramos los elementos del HTML que contienen la clase Price
-        names_flowers = service_get_data.get_name_elemnts()
+        names_flowers = service_get_data.get_name_elements()
         price_flowers = service_get_data.get_prices()
         image_url_flowers = service_get_data.get_url_images()
 
