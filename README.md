@@ -1,6 +1,6 @@
  python3.11 -m venv env                                                                                              
 
-pip3.11 install requirements.txt
+pip3.11 install -r requirements.txt
 
 python3.11 main.py
 
