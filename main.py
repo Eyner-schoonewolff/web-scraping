@@ -6,29 +6,18 @@ import pandas as pd
 
 
 try:
-    # clase para automatizar las tareas 
+    # clase para automatizar las tareas
     process_automation = ProcessAutomation()
 
     page_content = process_automation.get_url_page(
-        "https://flordeliz.com/index.php?route=product/category&path=77&page=2"
+        "https://flordeliz.com/index.php?route=product/category&path=77&page=1"
     )
-
-    soup = BeautifulSoup(page_content, "html.parser") #Uso del BeautifulSoup para parsear el contenido HTML obtenido
-
-    service_get_data = GetDataPage(soup=soup)
-
-    # encontramos los elementos que necesitamos cada uno obteniendolo por su class
-    names_flowers = service_get_data.get_name_elements()
-    price_flowers = service_get_data.get_prices()
-    image_url_flowers = service_get_data.get_url_images()
 
     # pasamos la data obtenida a un dataframe usando la libreria de pandas
-    df_data = pd.DataFrame(
-        {"name": names_flowers, "price": price_flowers, "image_url": image_url_flowers}
-    )
-
-    print(df_data)
-
+    df_data = pd.DataFrame(page_content)
+    
+    df_data.to_excel('informacion_flores_naturales.xlsx', index=False)
+    
 except requests.RequestException as e:
     raise ScrapingError(f"Error de solicitud: {str(e)}")
 
