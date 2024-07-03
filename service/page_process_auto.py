@@ -78,28 +78,14 @@ class ProcessAutomation:
             :return: una lista de objeto que tendra el nombre, precio y la url.
             """
             try:
+                # Obtener datos de productos de la página actual
+                page_items = self.get_data_products(driver)
+                all_items.extend(page_items)  # Agregar los productos de la página actual a la lista principal
 
                 # Esperar a que la lista ul con clase pagination esté presente
                 pagination_list = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, "ul.pagination"))
                 )
-
-                # obtenemos el recurso de la pagina y la parseamos a un contenido HTML
-                page_source = driver.page_source
-                soup = BeautifulSoup(page_source, "html.parser")
-
-                # le mandamos a la clase la data de la pagina parseada
-                getDataPage = GetDataPage(soup)
-
-                names = getDataPage.get_name_elements()
-                prices = getDataPage.get_prices()
-                urls = getDataPage.get_url_images()
-                
-                # iteramos por cada una de la informacion obtenida el nombre precio y url vamos agrandola a una lis 
-                for name, price, url in zip(names, prices, urls):
-                    all_items.append(
-                        {"name": name, "price": price, "url": url}
-                    )  # Agregar los nombres de la página actual a la lista total
 
                 # Buscar el elemento li que contiene el enlace <a> con el texto '>'
                 next_page_link = pagination_list.find_element(
@@ -122,5 +108,27 @@ class ProcessAutomation:
                     f"Error al intentar hacer clic en el enlace de siguiente página: {e}"
                 )
                 break
+
+        return all_items
+
+    def get_data_products(self, driver: webdriver.Chrome):
+        
+        all_items = []
+        # obtenemos el recurso de la pagina y la parseamos a un contenido HTML
+        page_source = driver.page_source
+        soup = BeautifulSoup(page_source, "html.parser")
+
+        # le mandamos a la clase la data de la pagina parseada
+        getDataPage = GetDataPage(soup)
+
+        names = getDataPage.get_name_elements()
+        prices = getDataPage.get_prices()
+        urls = getDataPage.get_url_images()
+
+        # iteramos por cada una de la informacion obtenida el nombre precio y url vamos agrandola a una lis
+        for name, price, url in zip(names, prices, urls):
+            all_items.append(
+                {"nombre": name, "precio": price, "url": url}
+            )  # Agregar los nombres de la página actual a la lista total
 
         return all_items
